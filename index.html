@@ -1,0 +1,810 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+	<title>Clock</title>
+	<style>
+		* {
+			user-select: none;
+		}
+		body {
+			padding: 0;
+			margin: 0;
+			background-color: #F0F2F5;
+			background-attachment: fixed;
+		}
+		#page {
+			width: 100%;
+			height: 500px;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		}
+		#clock {
+			width: 500px;
+			height: 500px;
+			margin-top: 20px;
+			overflow: hidden;
+			border-radius: 50%;
+			position: relative;
+			justify-content: center;
+			display: flex;
+		}
+		#dot {
+			width: 25px;
+			height: 25px;
+			background-color: #f1a927;
+			margin-top: 237.5px;
+			border-radius: 50%;
+			position: absolute;
+			z-index: 100;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		#longhandarea {
+			height: 450px;
+			width: 5px;
+			margin-top: 25px;
+			border-radius: 10px;
+			position: absolute;
+			z-index: 100;
+		}
+		#longhand {
+			height: 250px;
+			width: 5px;
+			background-color: #f1a927;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		#shorthandarea {
+			height: 250px;
+			width: 15px;
+			margin-top: 125px;
+			border-radius: 10px;
+			position: absolute;
+			z-index: 10;
+		}
+		#shorthand {
+			height: 125px;
+			width: 15px;
+			background-color: #252525;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		#mediumhandarea {
+			height: 375px;
+			width: 8px;
+			margin-top: 62.5px;
+			border-radius: 10px;
+			position: absolute;
+			z-index: 0;
+		}
+		#mediumhand {
+			height: 187.5px;
+			width: 8px;
+			background-color: #252525;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		#name {
+			font-size: 30px;
+			font-family: 'Oswald', sans-serif;
+			color: #252525;
+			font-weight: bolder;
+			margin-top: 310px;
+		}
+		.line {
+			position: absolute;
+			z-index: 99;
+			height: 500px;
+			display: flex;
+			align-content: center;
+		}
+		.line1 {
+			width: 4px;
+			height: 25px;
+			background-color: #252525;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		.line2a {
+			display: flex;
+			justify-content: center;
+		}
+		.line2 {
+			width: 7px;
+			height: 50px;
+			background-color: #252525;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		.numbers {
+			font-size: 30px;
+			font-family: 'Oswald', sans-serif;
+			color: #252525;
+			font-weight: bolder;
+			position: absolute;
+			margin-top: 60px;
+			z-index: -1;
+		}
+		#nari {
+			font-size: 30px;
+			font-family: 'Oswald', sans-serif;
+			font-family: "IBM Plex Sans Arabic", sans-serif;
+			color: #252525;
+			font-weight: bolder;
+			text-align: center;
+			margin-top: 10px;
+		}
+		#horaire {
+			display: none;
+		}
+		#time {
+			width: 300px;
+			height: 500px;
+			display: flex;
+			align-items: center;
+			align-content: center;
+			flex-wrap: wrap;
+		}
+		table {
+			direction: rtl;
+			width: 300px;
+			height: 300px;
+		}
+		table tr td {
+			border:1px solid black;
+			font-size: 20px;
+			font-family: "IBM Plex Sans Arabic", sans-serif;
+			color: #252525;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			font-weight: bolder;
+			text-align: center;
+		}
+		#timeclock {
+			width: 300px;
+			font-size: 30px;
+			font-family: "IBM Plex Sans Arabic", sans-serif;
+			color: #252525;
+			font-weight: bolder;
+			margin: auto;
+			margin-top: 20px;
+			text-align: center;
+		}
+		#reversetimeclock {
+			font-size: 30px;
+			font-family: "IBM Plex Sans Arabic", sans-serif;
+			color: darkred;
+			font-weight: bolder;
+			margin: auto;
+			margin-top: 20px;
+			text-align: center;
+		}
+		#loadtime {
+		}
+
+		@media only screen and (max-width:900px) {
+			#page {
+				flex-direction: column;
+				height: auto;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div id="loadtime">
+		<div id="nari"></div>
+		<div id="page">
+			<div id="clock">
+				<div id="dot"></div>
+				<div id="longhandarea">
+					<div id="longhand"></div>
+				</div>
+				<div id="shorthandarea">
+					<div id="shorthand"></div>
+				</div>
+				<div id="mediumhandarea">
+					<div id="mediumhand"></div>
+				</div>
+				<div id="name">Ouahi</div>
+			</div>
+			<div id="time">
+				<table>
+					<tr>
+						<td>
+							الفجر
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							الشروق
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							الظهر
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							العصر
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							المغرب
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							العشاء
+						</td>
+						<td></td>
+					</tr>
+				</table>
+				<div id="timeclock"></div>
+				<div id="reversetimeclock"></div>
+			</div>
+		</div>
+		<table id="horaire" cellspacing="0" cellpadding="0">
+             <tbody><tr align="center">
+             	<td class="wakt">الأيام</td>
+                 <td class="wakt">محرم</td>
+                 <td class="wakt">يوليو / أغسطس</td>
+                 <td class="wakt">الصبح</td>
+                 <td class="wakt">الشروق</td>
+                 <td class="wakt">الظهر</td>
+                 <td class="wakt">العصر</td>
+                 <td class="wakt">المغرب</td>
+                 <td class="wakt">العشاء</td>
+             </tr>
+             <tr align="center">             <td>الأحد</td>
+             <td>1 </td>
+             <td>7 </td>
+             <td>04:30</td>
+             <td>06:15</td>
+             <td>13:34 </td>
+             <td>
+            	17:14            </td>
+             <td>20:44</td>
+             <td> 22:14</td>
+             </tr>
+              <tr align="center">             <td>الإثنين</td>
+             <td>2 </td>
+             <td>8 </td>
+             <td>04:31</td>
+             <td>06:16</td>
+             <td>13:35 </td>
+             <td>
+            	17:14            </td>
+             <td>20:44</td>
+             <td> 22:14</td>
+             </tr>
+              <tr align="center">             <td>الثلاثاء</td>
+             <td>3 </td>
+             <td>9 </td>
+             <td>04:32</td>
+             <td>06:16</td>
+             <td>13:35 </td>
+             <td>
+            	17:15            </td>
+             <td>20:44</td>
+             <td> 22:13</td>
+             </tr>
+              <tr align="center">             <td>الأربعاء</td>
+             <td>4 </td>
+             <td>10 </td>
+             <td>04:33</td>
+             <td>06:17</td>
+             <td>13:35 </td>
+             <td>
+            	17:15            </td>
+             <td>20:43</td>
+             <td> 22:13</td>
+             </tr>
+              <tr align="center">             <td>الخميس</td>
+             <td>5 </td>
+             <td>11 </td>
+             <td>04:34</td>
+             <td>06:17</td>
+             <td>13:35 </td>
+             <td>
+            	17:15            </td>
+             <td>20:43</td>
+             <td> 22:12</td>
+             </tr>
+              <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
+             <td>6 </td>
+             <td>12 </td>
+             <td>04:34</td>
+             <td>06:18</td>
+             <td>13:35 </td>
+             <td>
+            	17:15            </td>
+             <td>20:43</td>
+             <td> 22:11</td>
+             </tr>
+              <tr align="center">             <td>السبت</td>
+             <td>7 </td>
+             <td>13 </td>
+             <td>04:35</td>
+             <td>06:19</td>
+             <td>13:35 </td>
+             <td>
+            	17:15            </td>
+             <td>20:42</td>
+             <td> 22:11</td>
+             </tr>
+              <tr align="center">             <td>الأحد</td>
+             <td>8 </td>
+             <td>14 </td>
+             <td>04:36</td>
+             <td>06:19</td>
+             <td>13:35 </td>
+             <td>
+            	17:15            </td>
+             <td>20:42</td>
+             <td> 22:10</td>
+             </tr>
+              <tr align="center">             <td>الإثنين</td>
+             <td>9 </td>
+             <td>15 </td>
+             <td>04:37</td>
+             <td>06:20</td>
+             <td>13:35 </td>
+             <td>
+            	17:15            </td>
+             <td>20:41</td>
+             <td> 22:09</td>
+             </tr>
+              <tr align="center">             <td>الثلاثاء</td>
+             <td>10 </td>
+             <td>16 </td>
+             <td>04:38</td>
+             <td>06:21</td>
+             <td>13:35 </td>
+             <td>
+            	17:15            </td>
+             <td>20:41</td>
+             <td> 22:09</td>
+             </tr>
+              <tr align="center">             <td>الأربعاء</td>
+             <td>11 </td>
+             <td>17 </td>
+             <td>04:39</td>
+             <td>06:21</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:40</td>
+             <td> 22:08</td>
+             </tr>
+              <tr align="center">             <td>الخميس</td>
+             <td>12 </td>
+             <td>18 </td>
+             <td>04:40</td>
+             <td>06:22</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:40</td>
+             <td> 22:07</td>
+             </tr>
+              <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
+             <td>13 </td>
+             <td>19 </td>
+             <td>04:41</td>
+             <td>06:23</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:39</td>
+             <td> 22:06</td>
+             </tr>
+              <tr align="center">             <td>السبت</td>
+             <td>14 </td>
+             <td>20 </td>
+             <td>04:42</td>
+             <td>06:23</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:39</td>
+             <td> 22:06</td>
+             </tr>
+              <tr align="center">             <td>الأحد</td>
+             <td>15 </td>
+             <td>21 </td>
+             <td>04:43</td>
+             <td>06:24</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:38</td>
+             <td> 22:05</td>
+             </tr>
+              <tr align="center">             <td>الإثنين</td>
+             <td>16 </td>
+             <td>22 </td>
+             <td>04:44</td>
+             <td>06:25</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:38</td>
+             <td> 22:04</td>
+             </tr>
+              <tr align="center">             <td>الثلاثاء</td>
+             <td>17 </td>
+             <td>23 </td>
+             <td>04:45</td>
+             <td>06:25</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:37</td>
+             <td> 22:03</td>
+             </tr>
+              <tr align="center">             <td>الأربعاء</td>
+             <td>18 </td>
+             <td>24 </td>
+             <td>04:46</td>
+             <td>06:26</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:36</td>
+             <td> 22:02</td>
+             </tr>
+              <tr align="center">             <td>الخميس</td>
+             <td>19 </td>
+             <td>25 </td>
+             <td>04:47</td>
+             <td>06:27</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:36</td>
+             <td> 22:01</td>
+             </tr>
+              <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
+             <td>20 </td>
+             <td>26 </td>
+             <td>04:48</td>
+             <td>06:27</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:35</td>
+             <td> 22:00</td>
+             </tr>
+              <tr align="center">             <td>السبت</td>
+             <td>21 </td>
+             <td>27 </td>
+             <td>04:49</td>
+             <td>06:28</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:34</td>
+             <td> 21:59</td>
+             </tr>
+              <tr align="center">             <td>الأحد</td>
+             <td>22 </td>
+             <td>28 </td>
+             <td>04:50</td>
+             <td>06:29</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:33</td>
+             <td> 21:58</td>
+             </tr>
+              <tr align="center">             <td>الإثنين</td>
+             <td>23 </td>
+             <td>29 </td>
+             <td>04:51</td>
+             <td>06:29</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:33</td>
+             <td> 21:57</td>
+             </tr>
+              <tr align="center">             <td>الثلاثاء</td>
+             <td>24 </td>
+             <td>30 </td>
+             <td>04:52</td>
+             <td>06:30</td>
+             <td>13:36 </td>
+             <td>
+            	17:15            </td>
+             <td>20:32</td>
+             <td> 21:56</td>
+             </tr>
+              <tr align="center">             <td>الأربعاء</td>
+             <td>25 </td>
+             <td>31 </td>
+             <td>04:53</td>
+             <td>06:31</td>
+             <td>13:36 </td>
+             <td>
+            	17:14            </td>
+             <td>20:31</td>
+             <td> 21:55</td>
+             </tr>
+              <tr align="center">             <td>الخميس</td>
+             <td>26 </td>
+             <td>1 </td>
+             <td>04:54</td>
+             <td>06:32</td>
+             <td>13:36 </td>
+             <td>
+            	17:14            </td>
+             <td>20:30</td>
+             <td> 21:53</td>
+             </tr>
+              <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
+             <td>27 </td>
+             <td>2 </td>
+             <td>04:56</td>
+             <td>06:32</td>
+             <td>13:36 </td>
+             <td>
+            	17:14            </td>
+             <td>20:29</td>
+             <td> 21:52</td>
+             </tr>
+              <tr align="center">             <td>السبت</td>
+             <td>28 </td>
+             <td>3 </td>
+             <td>04:57</td>
+             <td>06:33</td>
+             <td>13:35 </td>
+             <td>
+            	17:14            </td>
+             <td>20:28</td>
+             <td> 21:51</td>
+             </tr>
+              <tr align="center">             <td>الأحد</td>
+             <td>29 </td>
+             <td>4 </td>
+             <td>04:58</td>
+             <td>06:34</td>
+             <td>13:35 </td>
+             <td>
+            	17:14            </td>
+             <td>20:27</td>
+             <td> 21:50</td>
+             </tr>
+              <tr align="center">             <td>الإثنين</td>
+             <td>حسب نتيجة المراقبة </td>
+             <td>5 </td>
+             <td>04:59</td>
+             <td>06:35</td>
+             <td>13:35 </td>
+             <td>
+            	17:13            </td>
+             <td>20:26</td>
+             <td> 21:49</td>
+             </tr>
+                          </tbody></table>
+	</div>
+	<script>
+		const d = new Date();
+		var date = d.getDate();
+		var zero =document.getElementById("horaire");
+		var one = zero.getElementsByTagName('tr');
+		var two;
+		var time = document.getElementById("time");
+		var table = time.getElementsByTagName('table')[0];
+		var tr = table.getElementsByTagName("tr");
+		var td,day,day1;
+		var ca,cb,cc,cd,ce=86400,cs;
+		const countadanh=[];
+		const countadanm=[];
+		const countadanc=[];
+		for (var i = 0; i < one.length; i++) {
+			two=one[i].getElementsByTagName("td")[2].innerHTML;
+			if (date==two) {
+				day=one[i].getElementsByTagName("td")[1].innerHTML;
+				day=Number(day);
+			}
+		}
+		for (var i = 0; i < tr.length; i++) {
+			td=tr[i].getElementsByTagName("td")[1];
+			day1=one[day].getElementsByTagName("td")[Number(i+3)];
+			td.innerHTML=day1.innerHTML.trim();
+		}
+		
+		for (var i = 0; i < tr.length; i++) {
+			td=tr[i].getElementsByTagName("td")[1].innerHTML;
+			ca=td.charAt(0);
+			cb=td.charAt(1);
+			cc=td.charAt(3);
+			cd=td.charAt(4);
+			countadanh[i]=Number(ca+cb);
+			countadanm[i]=Number(cc+cd);
+			countadanc[i]=countadanh[i]*3600+countadanm[i]*60;
+		}
+	</script>
+	<script>
+		$(document).ready(function(){
+			let windowwidth=$(window).width();
+			let windowwidthc;
+
+			$(window).resize(function(){
+				windowwidth=$(window).width();
+				if (windowwidth<=900) {
+					windowwidthc=windowwidth/500;
+					$("#clock").css("transform","scale("+windowwidthc+")");
+				} else {
+					$("#clock").css("transform","scale(1)");
+				}
+			});
+
+			$(function change(){
+				if (windowwidth<=900) {
+					windowwidthc=windowwidth/500;
+					$("#clock").css("transform","scale("+windowwidthc+")");
+				} else {
+					$("#clock").css("transform","scale(1)");
+				}
+			});
+
+
+			$(function ouahi(){
+				var $clock=$("#clock");
+				var count;
+				for (var i = 1; i <= 60; i++) {
+					count=6*i;
+					if (i%5==0) {
+						$clock.append(
+						$("<div>").attr("class", "line").css("transform", "rotate("+count+"deg)").append(
+							$("<div>").attr("class", "line2a").append(
+								$("<div>").attr("class", "line2")
+								).append(
+								$("<div>").attr("class", "numbers").text(Number(i/5)).css("transform", "rotate("+Number(-1*count)+"deg)")
+								)
+							)
+						);
+					} else {
+						$clock.append(
+						$("<div>").attr("class", "line").css("transform", "rotate("+count+"deg)").append(
+							$("<div>").attr("class", "line1")
+							)
+						);
+					}
+				}
+			});
+			$(function nari(){
+				const d = new Date();
+				const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+				const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+				document.getElementById("nari").innerHTML = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()+"<br> 1445 "+one[day].getElementsByTagName("td")[Number(0)].innerHTML+" "+day+"  محرم	";
+			});
+			$(function noureddine(){
+				var $longhandarea=$("#longhandarea");
+				var $shorthandarea=$("#shorthandarea");
+				var $mediumhandarea=$("#mediumhandarea");
+				var $timeclock=$("#timeclock");
+				var $reversetimeclock=$("#reversetimeclock");
+				var h,m,s;
+				var counts;
+				var counth;
+				var countm;
+				var countn;
+				var countts,counttm,countth;
+				var counttsr,counttmr,countthr,s,c,mag;
+				var sign="-";
+				var trtd=tr[4].getElementsByTagName("td")[1].innerHTML;
+				trtd=Number(trtd.charAt(3)+trtd.charAt(4));
+
+				
+
+				const d = new Date();
+				var h=d.getHours();
+				var m=d.getMinutes();
+				var s=d.getSeconds();
+				counth=h;
+				countm=m*6;
+				counts=s*6;
+				countn=d.getMilliseconds();
+				countth=counth;
+				counttm=countm/6;
+				countts=counts/6;
+				s=s+h*3600+m*60;
+				for (var i = 0; i < tr.length; i++) {
+					var trop=Number(countadanc[i]-s);
+					if (trop>=-900) {
+						if (ce > trop) {
+							ce=trop;
+							cs=i;
+							ma=false;
+						}
+					}
+				}
+
+				for (var i = 0; i < tr.length; i++) {
+					if (i==cs) {
+						tr[i].style.backgroundColor="#f1bd27";
+					} else {
+						tr[i].style.backgroundColor="#27f144";
+					}
+				}
+				mag=ce+s;
+				c=mag-s;
+				if (counth <=12) {
+					counth=counth*30;
+				} else {
+					counth=counth-12;
+					counth=counth*30;
+				}
+				counts=counts+countn*6/1000;
+				countm=countm+counts*6/360;
+				counth=counth+countm*3/36;
+				$longhandarea.css("transform", "rotate("+counts+"deg)");
+				$shorthandarea.css("transform", "rotate("+counth+"deg)");
+				$mediumhandarea.css("transform", "rotate("+countm+"deg)");
+				if (countts==60) {
+					countts=0+"0";
+					counttm+=1;
+				}
+				if (countth<10 && countth>=0) {
+					countth="0"+countth;
+				}
+				if (countts<10 && countts>=0) {
+					countts="0"+countts;
+				}
+				if (counttm<10 && counttm>=0) {
+					counttm="0"+counttm;
+				}
+				$timeclock.text(countth+":"+counttm+":"+countts);
+
+				counttmr=c%3600;
+				countthr=c-counttmr;
+				countthr=countthr/3600;
+				counttsr=counttmr%60;
+				counttmr=counttmr-counttsr;
+				counttmr=counttmr/60;
+				if (s>mag) {
+					sign="+";
+					counttmr=-1*counttmr;
+					counttsr=-1*counttsr;
+					countthr=-1*countthr;
+				}
+				if (counttsr==60) {
+					counttsr=0+"0";
+					counttmr+=1;
+				}
+				if (countthr<10 && countthr>=0) {
+					countthr="0"+countthr;
+				}
+				if (counttsr<10 && counttsr>=0) {
+					counttsr="0"+counttsr;
+				}
+				if (counttmr<10 && counttmr>=0) {
+					counttmr="0"+counttmr;
+				}
+				$reversetimeclock.text(sign+countthr+":"+counttmr+":"+counttsr);
+
+				if (counth==360 || counth==0) {
+					nari();
+				}
+				requestAnimationFrame(noureddine);
+			});
+		});
+	</script>
+</body>
+</html>
