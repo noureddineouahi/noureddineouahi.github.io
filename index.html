@@ -646,8 +646,9 @@
 
 			$(window).resize(function(){
 				windowwidth=$(window).width();
-				if (windowwidth<=900) {
-					windowwidthc=windowwidth/500;
+				if (windowwidth<=500) {
+
+					windowwidthc=(windowwidth-50)/500;
 					$("#clock").css("transform","scale("+windowwidthc+")");
 				} else {
 					$("#clock").css("transform","scale(1)");
@@ -655,8 +656,8 @@
 			});
 
 			$(function change(){
-				if (windowwidth<=900) {
-					windowwidthc=windowwidth/500;
+				if (windowwidth<=500) {
+					windowwidthc=(windowwidth-50)/500;
 					$("#clock").css("transform","scale("+windowwidthc+")");
 				} else {
 					$("#clock").css("transform","scale(1)");
