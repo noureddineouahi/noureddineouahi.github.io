@@ -8,34 +8,56 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+	<script src="adan.js"></script>
 	<title>Clock</title>
 	<style>
+		
 		* {
 			user-select: none;
 		}
+
 		body {
 			padding: 0;
 			margin: 0;
 			background-color: #F0F2F5;
 			background-attachment: fixed;
 		}
+
+		#loadtime {
+			overflow: hidden;
+			position: relative;
+			display: none;
+		}
+
+		#nari {
+			font-size: 30px;
+			font-family: 'Oswald', sans-serif;
+			font-family: "IBM Plex Sans Arabic", sans-serif;
+			color: #252525;
+			font-weight: bolder;
+			text-align: center;
+			margin-top: 10px;
+		}
+
 		#page {
 			width: 100%;
-			height: 500px;
 			display: flex;
 			justify-content: space-around;
 			align-items: center;
 		}
+
 		#clock {
 			width: 500px;
 			height: 500px;
 			margin-top: 20px;
+			margin-bottom: 20px;
 			overflow: hidden;
 			border-radius: 50%;
 			position: relative;
 			justify-content: center;
 			display: flex;
 		}
+
 		#dot {
 			width: 25px;
 			height: 25px;
@@ -46,6 +68,7 @@
 			z-index: 100;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
+
 		#longhandarea {
 			height: 450px;
 			width: 5px;
@@ -54,6 +77,7 @@
 			position: absolute;
 			z-index: 100;
 		}
+
 		#longhand {
 			height: 250px;
 			width: 5px;
@@ -61,6 +85,7 @@
 			border-radius: 10px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
+
 		#shorthandarea {
 			height: 250px;
 			width: 15px;
@@ -69,6 +94,7 @@
 			position: absolute;
 			z-index: 10;
 		}
+
 		#shorthand {
 			height: 125px;
 			width: 15px;
@@ -76,6 +102,7 @@
 			border-radius: 10px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
+
 		#shorthandareashadow {
 			height: 250px;
 			width: 15px;
@@ -85,6 +112,7 @@
 			position: absolute;
 			z-index: 10;
 		}
+
 		#shorthandshadow {
 			height: 50%;
 			width: 15px;
@@ -92,6 +120,7 @@
 			border-radius: 10px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
+
 		#mediumhandarea {
 			height: 375px;
 			width: 8px;
@@ -100,6 +129,7 @@
 			position: absolute;
 			z-index: 0;
 		}
+
 		#mediumhand {
 			height: 187.5px;
 			width: 8px;
@@ -107,6 +137,7 @@
 			border-radius: 10px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
+
 		#mediumhandareashadow {
 			height: 375px;
 			width: 8px;
@@ -116,6 +147,7 @@
 			position: absolute;
 			z-index: 0;
 		}
+
 		#mediumhandshadow {
 			height: 50%;
 			width: 8px;
@@ -123,6 +155,7 @@
 			border-radius: 10px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
+
 		#name {
 			font-size: 30px;
 			font-family: 'Oswald', sans-serif;
@@ -130,6 +163,7 @@
 			font-weight: bolder;
 			margin-top: 310px;
 		}
+
 		.line {
 			position: absolute;
 			z-index: 99;
@@ -137,6 +171,7 @@
 			display: flex;
 			align-content: center;
 		}
+
 		.line1 {
 			width: 4px;
 			height: 25px;
@@ -144,10 +179,12 @@
 			border-radius: 10px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
+
 		.line2a {
 			display: flex;
 			justify-content: center;
 		}
+
 		.line2 {
 			width: 7px;
 			height: 50px;
@@ -155,6 +192,7 @@
 			border-radius: 10px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		}
+
 		.numbers {
 			font-size: 30px;
 			font-family: 'Oswald', sans-serif;
@@ -164,32 +202,24 @@
 			margin-top: 60px;
 			z-index: -1;
 		}
-		#nari {
-			font-size: 30px;
-			font-family: 'Oswald', sans-serif;
-			font-family: "IBM Plex Sans Arabic", sans-serif;
-			color: #252525;
-			font-weight: bolder;
-			text-align: center;
-			margin-top: 10px;
-		}
-		#horaire {
-			display: none;
-		}
+
 		#time {
 			width: 300px;
 			height: 500px;
 			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
 			align-items: center;
-			align-content: center;
-			flex-wrap: wrap;
+
 		}
-		table {
+
+		#aoukat table {
 			direction: rtl;
-			width: 300px;
+			width: 350px;
 			height: 300px;
 		}
-		table tr td {
+
+		#aoukat table tr td {
 			border:1px solid black;
 			font-size: 20px;
 			font-family: "IBM Plex Sans Arabic", sans-serif;
@@ -198,26 +228,41 @@
 			font-weight: bolder;
 			text-align: center;
 		}
+
 		#timeclock {
-			width: 300px;
 			font-size: 30px;
 			font-family: "IBM Plex Sans Arabic", sans-serif;
 			color: #252525;
 			font-weight: bolder;
-			margin: auto;
-			margin-top: 20px;
 			text-align: center;
+			overflow: hidden;
 		}
+
 		#reversetimeclock {
 			font-size: 30px;
 			font-family: "IBM Plex Sans Arabic", sans-serif;
 			color: darkred;
 			font-weight: bolder;
-			margin: auto;
-			margin-top: 20px;
 			text-align: center;
+			overflow: hidden;
 		}
-		#loadtime {
+
+		#medina {
+			width: 100%;
+			height: 100vh;
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#medina select {
+			width: 300px;
+			font-size: 30px;
+			font-family: "IBM Plex Sans Arabic", sans-serif;
+			color: darkred;
+			text-align: center;
+			text-transform: capitalize;
 		}
 
 		@media only screen and (max-width:900px) {
@@ -229,11 +274,17 @@
 	</style>
 </head>
 <body>
+	<div id="medina">
+		<select required>
+			<option id="selectcity" value="" selected disabled hidden>Select city...</option>
+			<option id="rabat" value="rabat">rabat</option>
+			<option id="khemisset" value="khemisset">khemisset</option>
+		</select>
+	</div>
 	<div id="loadtime">
 		<div id="nari"></div>
 		<div id="page">
 			<div id="clock">
-				<div id="dot"></div>
 				<div id="longhandarea">
 					<div id="longhand"></div>
 				</div>
@@ -253,624 +304,316 @@
 				<div id="name">Ouahi</div>
 			</div>
 			<div id="time">
-				<table>
-					<tr>
-						<td>
-							الفجر
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							الشروق
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							الظهر
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							العصر
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							المغرب
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							العشاء
-						</td>
-						<td></td>
-					</tr>
-				</table>
+				<div id="aoukat">
+					<table>
+						<tr>
+							<td>
+								الفجر
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								الشروق
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								الظهر
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								العصر
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								المغرب
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								العشاء
+							</td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
 				<div id="timeclock"></div>
 				<div id="reversetimeclock"></div>
 			</div>
 		</div>
-		<table id="horaire" cellspacing="0" cellpadding="0">
-             <tbody><tr align="center">
-             	<td class="wakt">الأيام</td>
-                 <td class="wakt">شعبان</td>
-                 <td class="wakt">يناير / فبراير</td>
-                 <td class="wakt">الصبح</td>
-                 <td class="wakt">الشروق</td>
-                 <td class="wakt">الظهر</td>
-                 <td class="wakt">العصر</td>
-                 <td class="wakt">المغرب</td>
-                 <td class="wakt">العشاء</td>
-             </tr>
-             <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
-             <td>1 </td>
-             <td>31 </td>
-             <td>06:51</td>
-             <td>08:17</td>
-             <td>13:43 </td>
-             <td>
-            	16:33            </td>
-             <td>19:00</td>
-             <td> 20:15</td>
-             </tr>
-              <tr align="center">             <td>السبت</td>
-             <td>2 </td>
-             <td>1 </td>
-             <td>06:50</td>
-             <td>08:16</td>
-             <td>13:43 </td>
-             <td>
-            	16:34            </td>
-             <td>19:01</td>
-             <td> 20:16</td>
-             </tr>
-              <tr align="center">             <td>الأحد</td>
-             <td>3 </td>
-             <td>2 </td>
-             <td>06:50</td>
-             <td>08:15</td>
-             <td>13:43 </td>
-             <td>
-            	16:35            </td>
-             <td>19:02</td>
-             <td> 20:17</td>
-             </tr>
-              <tr align="center">             <td>الإثنين</td>
-             <td>4 </td>
-             <td>3 </td>
-             <td>06:49</td>
-             <td>08:15</td>
-             <td>13:43 </td>
-             <td>
-            	16:36            </td>
-             <td>19:03</td>
-             <td> 20:18</td>
-             </tr>
-              <tr align="center">             <td>الثلاثاء</td>
-             <td>5 </td>
-             <td>4 </td>
-             <td>06:48</td>
-             <td>08:14</td>
-             <td>13:43 </td>
-             <td>
-            	16:36            </td>
-             <td>19:04</td>
-             <td> 20:18</td>
-             </tr>
-              <tr align="center">             <td>الأربعاء</td>
-             <td>6 </td>
-             <td>5 </td>
-             <td>06:48</td>
-             <td>08:13</td>
-             <td>13:43 </td>
-             <td>
-            	16:37            </td>
-             <td>19:05</td>
-             <td> 20:19</td>
-             </tr>
-              <tr align="center">             <td>الخميس</td>
-             <td>7 </td>
-             <td>6 </td>
-             <td>06:47</td>
-             <td>08:12</td>
-             <td>13:43 </td>
-             <td>
-            	16:38            </td>
-             <td>19:06</td>
-             <td> 20:20</td>
-             </tr>
-              <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
-             <td>8 </td>
-             <td>7 </td>
-             <td>06:46</td>
-             <td>08:11</td>
-             <td>13:43 </td>
-             <td>
-            	16:39            </td>
-             <td>19:07</td>
-             <td> 20:21</td>
-             </tr>
-              <tr align="center">             <td>السبت</td>
-             <td>9 </td>
-             <td>8 </td>
-             <td>06:45</td>
-             <td>08:11</td>
-             <td>13:43 </td>
-             <td>
-            	16:39            </td>
-             <td>19:08</td>
-             <td> 20:22</td>
-             </tr>
-              <tr align="center">             <td>الأحد</td>
-             <td>10 </td>
-             <td>9 </td>
-             <td>06:45</td>
-             <td>08:10</td>
-             <td>13:44 </td>
-             <td>
-            	16:40            </td>
-             <td>19:09</td>
-             <td> 20:23</td>
-             </tr>
-              <tr align="center">             <td>الإثنين</td>
-             <td>11 </td>
-             <td>10 </td>
-             <td>06:44</td>
-             <td>08:09</td>
-             <td>13:44 </td>
-             <td>
-            	16:41            </td>
-             <td>19:09</td>
-             <td> 20:23</td>
-             </tr>
-              <tr align="center">             <td>الثلاثاء</td>
-             <td>12 </td>
-             <td>11 </td>
-             <td>06:43</td>
-             <td>08:08</td>
-             <td>13:44 </td>
-             <td>
-            	16:42            </td>
-             <td>19:10</td>
-             <td> 20:24</td>
-             </tr>
-              <tr align="center">             <td>الأربعاء</td>
-             <td>13 </td>
-             <td>12 </td>
-             <td>06:42</td>
-             <td>08:07</td>
-             <td>13:44 </td>
-             <td>
-            	16:42            </td>
-             <td>19:11</td>
-             <td> 20:25</td>
-             </tr>
-              <tr align="center">             <td>الخميس</td>
-             <td>14 </td>
-             <td>13 </td>
-             <td>06:41</td>
-             <td>08:06</td>
-             <td>13:43 </td>
-             <td>
-            	16:43            </td>
-             <td>19:12</td>
-             <td> 20:26</td>
-             </tr>
-              <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
-             <td>15 </td>
-             <td>14 </td>
-             <td>06:40</td>
-             <td>08:05</td>
-             <td>13:43 </td>
-             <td>
-            	16:44            </td>
-             <td>19:13</td>
-             <td> 20:27</td>
-             </tr>
-              <tr align="center">             <td>السبت</td>
-             <td>16 </td>
-             <td>15 </td>
-             <td>06:40</td>
-             <td>08:04</td>
-             <td>13:43 </td>
-             <td>
-            	16:44            </td>
-             <td>19:14</td>
-             <td> 20:28</td>
-             </tr>
-              <tr align="center">             <td>الأحد</td>
-             <td>17 </td>
-             <td>16 </td>
-             <td>06:39</td>
-             <td>08:03</td>
-             <td>13:43 </td>
-             <td>
-            	16:45            </td>
-             <td>19:15</td>
-             <td> 20:28</td>
-             </tr>
-              <tr align="center">             <td>الإثنين</td>
-             <td>18 </td>
-             <td>17 </td>
-             <td>06:38</td>
-             <td>08:02</td>
-             <td>13:43 </td>
-             <td>
-            	16:46            </td>
-             <td>19:16</td>
-             <td> 20:29</td>
-             </tr>
-              <tr align="center">             <td>الثلاثاء</td>
-             <td>19 </td>
-             <td>18 </td>
-             <td>06:37</td>
-             <td>08:01</td>
-             <td>13:43 </td>
-             <td>
-            	16:46            </td>
-             <td>19:17</td>
-             <td> 20:30</td>
-             </tr>
-              <tr align="center">             <td>الأربعاء</td>
-             <td>20 </td>
-             <td>19 </td>
-             <td>06:36</td>
-             <td>08:00</td>
-             <td>13:43 </td>
-             <td>
-            	16:47            </td>
-             <td>19:18</td>
-             <td> 20:31</td>
-             </tr>
-              <tr align="center">             <td>الخميس</td>
-             <td>21 </td>
-             <td>20 </td>
-             <td>06:35</td>
-             <td>07:59</td>
-             <td>13:43 </td>
-             <td>
-            	16:48            </td>
-             <td>19:19</td>
-             <td> 20:32</td>
-             </tr>
-              <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
-             <td>22 </td>
-             <td>21 </td>
-             <td>06:34</td>
-             <td>07:58</td>
-             <td>13:43 </td>
-             <td>
-            	16:48            </td>
-             <td>19:19</td>
-             <td> 20:33</td>
-             </tr>
-              <tr align="center">             <td>السبت</td>
-             <td>23 </td>
-             <td>22 </td>
-             <td>06:33</td>
-             <td>07:56</td>
-             <td>13:43 </td>
-             <td>
-            	16:49            </td>
-             <td>19:20</td>
-             <td> 20:33</td>
-             </tr>
-              <tr align="center">             <td>الأحد</td>
-             <td>24 </td>
-             <td>23 </td>
-             <td>06:31</td>
-             <td>07:55</td>
-             <td>13:43 </td>
-             <td>
-            	16:49            </td>
-             <td>19:21</td>
-             <td> 20:34</td>
-             </tr>
-              <tr align="center">             <td>الإثنين</td>
-             <td>25 </td>
-             <td>24 </td>
-             <td>06:30</td>
-             <td>07:54</td>
-             <td>13:42 </td>
-             <td>
-            	16:50            </td>
-             <td>19:22</td>
-             <td> 20:35</td>
-             </tr>
-              <tr align="center">             <td>الثلاثاء</td>
-             <td>26 </td>
-             <td>25 </td>
-             <td>06:29</td>
-             <td>07:53</td>
-             <td>13:42 </td>
-             <td>
-            	16:50            </td>
-             <td>19:23</td>
-             <td> 20:36</td>
-             </tr>
-              <tr align="center">             <td>الأربعاء</td>
-             <td>27 </td>
-             <td>26 </td>
-             <td>06:28</td>
-             <td>07:52</td>
-             <td>13:42 </td>
-             <td>
-            	16:51            </td>
-             <td>19:24</td>
-             <td> 20:37</td>
-             </tr>
-              <tr align="center">             <td>الخميس</td>
-             <td>28 </td>
-             <td>27 </td>
-             <td>06:27</td>
-             <td>07:51</td>
-             <td>13:42 </td>
-             <td>
-            	16:51            </td>
-             <td>19:25</td>
-             <td> 20:37</td>
-             </tr>
-              <tr align="center" class="cournt" style="border-bottom: 2px solid #69633F !important;">             <td>الجمعة</td>
-             <td>29 </td>
-             <td>28 </td>
-             <td>06:26</td>
-             <td>07:49</td>
-             <td>13:42 </td>
-             <td>
-            	16:52            </td>
-             <td>19:25</td>
-             <td> 20:38</td>
-             </tr>
-              <tr align="center">             <td>السبت</td>
-             <td>حسب نتيجة المراقبة </td>
-             <td>1 </td>
-             <td>06:25</td>
-             <td>07:48</td>
-             <td>13:42 </td>
-             <td>
-            	16:52            </td>
-             <td>19:26</td>
-             <td> 20:39</td>
-             </tr>
-                          </tbody></table>
 	</div>
 	<script>
-		const d = new Date();
-		var date = d.getDate();
-		var zero =document.getElementById("horaire");
-		var one = zero.getElementsByTagName('tr');
-		var two;
-		var time = document.getElementById("time");
-		var table = time.getElementsByTagName('table')[0];
-		var tr = table.getElementsByTagName("tr");
-		var td,day,day1;
-		var ca,cb,cc,cd,ce=86400,cs;
+		const clock = document.querySelector('#clock');
+		let medinaname = document.getElementById("medina").getElementsByTagName("select")[0];
+		let medinaselect;
+		const medina = [];
+		let nhar;
+		let countnow;
 		const countadanh=[];
 		const countadanm=[];
 		const countadanc=[];
-		var counths;
-		var countms;
-		for (var i = 0; i < one.length; i++) {
-			two=one[i].getElementsByTagName("td")[2].innerHTML;
-			if (date==two) {
-				day=one[i].getElementsByTagName("td")[1].innerHTML;
-				day=Number(day);
+
+		let windowwidth = window.innerWidth;
+		let windowwidthc;
+
+		sizepage();
+
+		window.addEventListener("resize", () => {
+			windowwidth = window.innerWidth
+			sizepage();
+		});
+
+		function sizepage() {
+			if (windowwidth <= 500) {
+				windowwidthc = (windowwidth - 50) / 500;
+				clock.style.transform = `scale(${windowwidthc})`;
+			} else {
+				clock.style.transform = "scale(1)";
 			}
 		}
-		for (var i = 0; i < tr.length; i++) {
-			td=tr[i].getElementsByTagName("td")[1];
-			day1=one[day].getElementsByTagName("td")[Number(i+3)];
-			td.innerHTML=day1.innerHTML.trim();
+
+		const medinat = [rabat, khemisset];
+
+		let lmdina = localStorage.getItem("medina");
+
+		if (!lmdina) {
+
+			medinaname.addEventListener("change", function (){
+				medina.length=0;
+				medinaselect = Number(medinaname.selectedIndex - 1);
+				medina.push(medinat[medinaselect]);
+				localStorage.setItem("medina", medinaselect);
+				document.getElementById("selectcity").remove();
+				medinaname.getElementsByTagName('option')[medinaselect].setAttribute('selected', 'selected');
+				document.getElementById("medina").style.height="auto";
+				medinaname.style.width="200px";
+				medinaname.style.fontSize="20px";
+				document.getElementById('loadtime').style.display = "block";
+				taoukit();
+				date();
+				noureddine();
+				ouahi();
+			});
+
+		} else {
+			medina.length=0;
+			medina.push(medinat[lmdina]);
+			document.getElementById("selectcity").remove();
+			medinaname.getElementsByTagName('option')[lmdina].setAttribute('selected', 'selected');
+			document.getElementById("medina").style.height="auto";
+			medinaname.style.width="200px";
+			medinaname.style.fontSize="20px";
+			document.getElementById('loadtime').style.display = "block";
+			taoukit();
+			date();
+			noureddine();
+			ouahi();
 		}
-		
-		for (var i = 0; i < tr.length; i++) {
-			td=tr[i].getElementsByTagName("td")[1].innerHTML;
-			ca=td.charAt(0);
-			cb=td.charAt(1);
-			cc=td.charAt(3);
-			cd=td.charAt(4);
-			countadanh[i]=Number(ca+cb);
-			countadanm[i]=Number(cc+cd);
-			countadanc[i]=countadanh[i]*3600+countadanm[i]*60;
-		}
 
-		countadanc[tr.length]=86400;
-	</script>
-	<script>
-		$(document).ready(function(){
-			let windowwidth=$(window).width();
-			let windowwidthc;
-
-			$(window).resize(function(){
-				windowwidth=$(window).width();
-				if (windowwidth<=500) {
-
-					windowwidthc=(windowwidth-50)/500;
-					$("#clock").css("transform","scale("+windowwidthc+")");
-				} else {
-					$("#clock").css("transform","scale(1)");
-				}
-			});
-
-			$(function change(){
-				if (windowwidth<=500) {
-					windowwidthc=(windowwidth-50)/500;
-					$("#clock").css("transform","scale("+windowwidthc+")");
-				} else {
-					$("#clock").css("transform","scale(1)");
-				}
-			});
-
-
-			$(function ouahi(){
-				var $clock=$("#clock");
-				var count;
-				for (var i = 1; i <= 60; i++) {
-					count=6*i;
-					if (i%5==0) {
-						$clock.append(
-						$("<div>").attr("class", "line").css("transform", "rotate("+count+"deg)").append(
-							$("<div>").attr("class", "line2a").append(
-								$("<div>").attr("class", "line2")
-								).append(
-								$("<div>").attr("class", "numbers").text(Number(i/5)).css("transform", "rotate("+Number(-1*count)+"deg)")
-								)
-							)
-						);
-					} else {
-						$clock.append(
-						$("<div>").attr("class", "line").css("transform", "rotate("+count+"deg)").append(
-							$("<div>").attr("class", "line1")
-							)
-						);
-					}
-				}
-			});
-			$(function nari(){
-				const d = new Date();
-				const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-				const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-				document.getElementById("nari").innerHTML = days[d.getDay()]+", "+months[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()+"<br> 1445 "+one[day].getElementsByTagName("td")[Number(0)].innerHTML+" "+day+" "+document.getElementsByClassName("wakt")[1].innerHTML	;
-			});
-			$(function noureddine(){
-				var $longhandarea=$("#longhandarea");
-				var $shorthandarea=$("#shorthandarea");
-				var $mediumhandarea=$("#mediumhandarea");
-				var $timeclock=$("#timeclock");
-				var $reversetimeclock=$("#reversetimeclock");
-				var h,m,s;
-				var counts;
-				var counth;
-				var countm;
-				var countn;
-				var countts,counttm,countth;
-				var counttsr,counttmr,countthr,s,c,mag;
-				var sign="-";
-				var trtd=tr[4].getElementsByTagName("td")[1].innerHTML;
-				trtd=Number(trtd.charAt(3)+trtd.charAt(4));
-
-				
-
-				const d = new Date();
-				var h=d.getHours();
-				var m=d.getMinutes();
-				var s=d.getSeconds();
-				counth=h;
-				countm=m*6;
-				counts=s*6;
-				countn=d.getMilliseconds();
-				countth=counth;
-				counttm=countm/6;
-				countts=counts/6;
-				s=s+h*3600+m*60;
-				for (var i = 0; i <= tr.length; i++) {
-					var trop=Number(countadanc[i]-s);
-					if (trop>=-900) {
-						if (ce > trop) {
-							ce=trop;
-							cs=i;
-							ma=false;
-							counths=countadanh[i];
-							countms=countadanm[i]*6;
-						}
-					}
-				}
-
-				for (var i = 0; i < tr.length; i++) {
-					if (i==cs) {
-						tr[i].style.backgroundColor="#f1bd27";
-					} else {
-						tr[i].style.backgroundColor="#27f144";
-					}
-				}
-				mag=ce+s;
-				c=mag-s;
-				if (counth <=12) {
-					counth=counth*30;
-				} else {
-					counth=counth-12;
-					counth=counth*30;
-				}
-				counts=counts+countn*6/1000;
-				countm=countm+counts*6/360;
-				counth=counth+countm*3/36;
-				$longhandarea.css("transform", "rotate("+counts+"deg)");
-				$shorthandarea.css("transform", "rotate("+counth+"deg)");
-				$mediumhandarea.css("transform", "rotate("+countm+"deg)");
-
-				if (countts==60) {
-					countts=0+"0";
-					counttm+=1;
-				}
-				if (countth<10 && countth>=0) {
-					countth="0"+countth;
-				}
-				if (countts<10 && countts>=0) {
-					countts="0"+countts;
-				}
-				if (counttm<10 && counttm>=0) {
-					counttm="0"+counttm;
-				}
-				$timeclock.text(countth+":"+counttm+":"+countts);
-
-				counttmr=c%3600;
-				countthr=c-counttmr;
-				countthr=countthr/3600;
-				counttsr=counttmr%60;
-				counttmr=counttmr-counttsr;
-				counttmr=counttmr/60;
-				if (s>mag) {
-					sign="+";
-					counttmr=-1*counttmr;
-					counttsr=-1*counttsr;
-					countthr=-1*countthr;
-				}
-				if (counttsr==60) {
-					counttsr=0+"0";
-					counttmr+=1;
-				}
-				if (countthr<10 && countthr>=0) {
-					countthr="0"+countthr;
-				}
-				if (counttsr<10 && counttsr>=0) {
-					counttsr="0"+counttsr;
-				}
-				if (counttmr<10 && counttmr>=0) {
-					counttmr="0"+counttmr;
-				}
-				$reversetimeclock.text(sign+countthr+":"+counttmr+":"+counttsr);
-
-				if (counth==360 || counth==0) {
-					nari();
-				}
-				requestAnimationFrame(noureddine);
-			});
-
-			$(function ahiya(){
-				var $shorthandareashadow=$("#shorthandareashadow");
-				var $mediumhandareashadow=$("#mediumhandareashadow");
-				$shorthandareashadow.show();
-				$mediumhandareashadow.show();
-				if (counths <=12) {
-					counths=counths*30;
-				} else {
-					counths=counths-12;
-					counths=counths*30;
-				}
-				counths=counths+countms*3/36;
-				$shorthandareashadow.css("transform", "rotate("+counths+"deg)");
-				$mediumhandareashadow.css("transform", "rotate("+countms+"deg)");
-			});
-
-			$(function lastadan(){
-
-			})
+		medinaname.addEventListener("change", function (){
+			medina.length=0;
+			medinaselect = Number(medinaname.selectedIndex);
+			medina.push(medinat[medinaselect]);
+			localStorage.setItem("medina", medinaselect);
+			medinaname.getElementsByTagName('option')[medinaselect].setAttribute('selected', 'selected');
+			taoukit();
+			date();
+			noureddine();
+			ouahi();
 		});
+
+		for (let i = 1; i <= 60; i++) {
+			let count = 6 * i;
+
+			const line = document.createElement('div');
+			line.className = 'line';
+			line.style.transform = `rotate(${count}deg)`;
+
+			if (i % 5 === 0) {
+				const line2a = document.createElement('div');
+				line2a.className = 'line2a';
+
+				const line2 = document.createElement('div');
+				line2.className = 'line2';
+				line2a.appendChild(line2);
+
+				const numbers = document.createElement('div');
+				numbers.className = 'numbers';
+				numbers.textContent = i / 5;
+				numbers.style.transform = `rotate(${(-1 * count)}deg)`;
+				line2a.appendChild(numbers);
+
+				line.appendChild(line2a);
+			} else {
+				const line1 = document.createElement('div');
+				line1.className = 'line1';
+				line.appendChild(line1);
+			}
+
+			clock.appendChild(line);
+		}
+
+		function taoukit() {
+			let n,hada,hadatest;
+			var adan=document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr');
+			const d = new Date();
+			n = d.getDate();
+
+			for (var i = 0; i < medina[0].length; i++) {
+				hada=medina[0][i];
+				if (n==hada[2]) {
+					if (!hadatest) {
+						nhar=hada;
+						hadatest=true;
+					}
+				}
+			}
+
+			for (var i = 0; i < adan.length; i++) {
+				adan[i].getElementsByTagName('td')[1].innerHTML=nhar[i+3]
+			}
+
+			for (var i = 0; i < adan.length; i++) {
+				let td=adan[i].getElementsByTagName("td")[1].innerHTML;
+				let ca=td.charAt(0);
+				let cb=td.charAt(1);
+				let cc=td.charAt(3);
+				let cd=td.charAt(4);
+				countadanh[i]=ca+cb;
+				countadanm[i]=cc+cd;
+				countadanc[i]=Number(countadanh[i])*3600+Number(countadanm[i])*60;
+			}
+
+		}
+
+		function date() {
+			const d = new Date();
+			const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+			const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+			document.getElementById("nari").innerHTML = `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`+"<br>"+`1446 ${nhar[0]} ${nhar[1]} ${medina[0][0][1]}`;
+		}
+
+		function noureddine() {
+			let h, m, s, counth, countm, counts, countn, counthn, countmn, countsn;
+			const longhandArea = document.querySelector("#longhandarea");
+			const shorthandArea = document.querySelector("#shorthandarea");
+			const mediumhandArea = document.querySelector("#mediumhandarea");
+			const timeclock = document.querySelector("#timeclock");
+
+			const d = new Date();
+			h = d.getHours();
+			m = d.getMinutes();
+			s = d.getSeconds();
+			countn = d.getMilliseconds();
+
+			countnow = s+h*3600+m*60;
+
+			counthn = h < 10 ? `0${h}` : h;
+			countmn = m < 10 ? `0${m}` : m;
+			countsn = s < 10 ? `0${s}` : s;
+
+			counth = h <= 12 ? h * 30 : (h - 12) * 30;
+			countm = m * 6;
+			counts = s * 6 + (countn * 6) / 1000;
+			countm += (counts * 6) / 360;
+			counth += (countm * 3) / 36;
+
+			if (longhandArea) longhandArea.style.transform = `rotate(${counts}deg)`;
+			if (shorthandArea) shorthandArea.style.transform = `rotate(${counth}deg)`;
+			if (mediumhandArea) mediumhandArea.style.transform = `rotate(${countm}deg)`;
+
+			timeclock.textContent = `${counthn}:${countmn}:${countsn}`;
+
+			requestAnimationFrame(noureddine);
+		}
+
+		function ouahi() {
+			let ca, cb, cc, cd, ch, cm, counth, countm, countnext, countthr, counttmr, counttsr, count=86400, sign = "-";
+			const shorthandAreaShadow = document.querySelector("#shorthandareashadow");
+			const mediumHandAreaShadow = document.querySelector("#mediumhandareashadow");
+			let timeCT;
+			let coloradan;
+
+			for (var i = 0; i < countadanc.length; i++) {
+				if (!timeCT) {
+					let countnexttogglenumber = Number(countadanc[i] - countnow);
+					if (countnexttogglenumber >= -900) {
+						timeCT = `${countadanh[i]}:${countadanm[i]}`;
+						count = countadanc[i];
+						coloradan = i;
+					}
+				}
+			}
+
+			if (!timeCT) {
+				timeCT = "24:00";
+			}
+
+			const reverse = count - countnow;
+
+			counttmr=reverse%3600;
+			countthr=reverse-counttmr;
+			countthr=countthr/3600;
+			counttsr=counttmr%60;
+			counttmr=counttmr-counttsr;
+			counttmr=counttmr/60;
+
+			ca = timeCT.charAt(0);
+			cb = timeCT.charAt(1);
+			cc = timeCT.charAt(3);
+			cd = timeCT.charAt(4);
+
+			ch = Number(ca + cb);
+			cm = Number(cc + cd);
+
+			counth = ch;
+			countm = cm * 6;
+
+			if (counth <= 12) {
+				counth = counth * 30;
+			} else {
+				counth = (counth - 12) * 30;
+			}
+
+			counth = counth + (countm * 3) / 36;
+
+			if (countnow > count) {
+				sign="+";
+				counttmr=-1*counttmr;
+				counttsr=-1*counttsr;
+				countthr=-1*countthr;
+			}
+
+			countthr = countthr < 10 ? `0${countthr}` : countthr;
+			counttmr = counttmr < 10 ? `0${counttmr}` : counttmr;
+			counttsr = counttsr < 10 ? `0${counttsr}` : counttsr;
+
+			shorthandAreaShadow.style.display = "block";
+			mediumHandAreaShadow.style.display = "block";
+
+			if (shorthandAreaShadow) shorthandAreaShadow.style.transform = `rotate(${counth}deg)`;
+			if (mediumHandAreaShadow) mediumHandAreaShadow.style.transform = `rotate(${countm}deg)`;
+
+			reversetimeclock.textContent = `${sign}${countthr}:${counttmr}:${counttsr}`;
+
+			for (var i = 0; i < countadanc.length; i++) {
+				if (i==coloradan) {
+					document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr')[i].style.backgroundColor="#f8de93";
+				} else {
+					document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr')[i].style.backgroundColor="#27f144";
+				}
+			}
+
+			requestAnimationFrame(ouahi);
+		}
 	</script>
 </body>
 </html>
