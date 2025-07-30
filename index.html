@@ -352,7 +352,7 @@
 		</div>
 	</div>
 	<script>
-		var notificationsignal=false;
+		var lastNotifiedAdanIndex=-1;
 
 		if (Notification.permission !== "granted") {
 			Notification.requestPermission();
@@ -632,8 +632,8 @@
 			}
 
 
-			if ((countthr >= 0) && (counttmr >= 0) && (counttsr >= 0)) {
-				notificationsignal=true;
+			if ((countthr >= 0) && (counttmr >= 0) && (counttsr >= 0) && coloradan !== lastNotifiedAdanIndex) {
+				lastNotifiedAdanIndex = coloradan;
 				sendNotification("⏰ Timer Finished", "It's Time for Salat");
 			}
 
