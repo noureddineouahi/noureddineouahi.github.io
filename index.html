@@ -352,16 +352,6 @@
 		</div>
 	</div>
 	<script>
-		var lastNotifiedAdanIndex=-1;
-
-		if (Notification.permission !== "granted") {
-			Notification.requestPermission();
-		}
-
-
-
-	</script>
-	<script>
 		const clock = document.querySelector('#clock');
 		let medinaname = document.getElementById("medina").getElementsByTagName("select")[0];
 		let medinaselect;
@@ -616,26 +606,6 @@
 			if (mediumHandAreaShadow) mediumHandAreaShadow.style.transform = `rotate(${countm}deg)`;
 
 			reversetimeclock.textContent = `${sign}${countthr}:${counttmr}:${counttsr}`;
-
-			notificationmessage=reversetimeclock.textContent;
-
-			notificationtitle=document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr')[coloradan].getElementsByTagName('td')[0]+" : "+document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr')[coloradan].getElementsByTagName('td')[1]
-
-
-			function sendNotification(notificationtitle, notificationmessage) {
-				if (Notification.permission === "granted") {
-					new Notification(notificationtitle, {
-						body: notificationmessage,
-						icon: "https://cdn-icons-png.flaticon.com/512/992/992700.png" // You can change this icon
-					});
-				}
-			}
-
-
-			if ((countthr >= 0) && (counttmr >= 0) && (counttsr >= 0) && coloradan !== lastNotifiedAdanIndex) {
-				lastNotifiedAdanIndex = coloradan;
-				sendNotification("⏰ Timer Finished", "It's Time for Salat");
-			}
 
 			for (var i = 0; i < countadanc.length; i++) {
 				if (i==coloradan) {
