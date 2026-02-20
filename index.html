@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,6 @@
 	<script src="adan.js"></script>
 	<title>Clock</title>
 	<style>
-		
 		* {
 			user-select: none;
 		}
@@ -21,6 +21,71 @@
 			margin: 0;
 			background-color: #F0F2F5;
 			background-attachment: fixed;
+			transition: background-color 0.3s ease; /* Smooth transition */
+		}
+
+		/* --- Dark Mode Styles --- */
+		body.dark-mode {
+			background-color: #121212;
+		}
+		body.dark-mode #nari,
+		body.dark-mode #name,
+		body.dark-mode .numbers,
+		body.dark-mode #timeclock {
+			color: #e0e0e0;
+		}
+		body.dark-mode #shorthand,
+		body.dark-mode #mediumhand,
+		body.dark-mode .line1,
+		body.dark-mode .line2 {
+			background-color: #e0e0e0;
+		}
+		body.dark-mode #reversetimeclock,
+		body.dark-mode #medina select {
+			color: #ff8a8a; /* Lighter red for better contrast */
+		}
+		body.dark-mode #medina select {
+			background-color: #2a2a2a;
+			border: 1px solid #555;
+		}
+        /* --- Prayer Time Table Colors --- */
+		#aoukat table tr td {
+			/* Added smooth transition for theme switching */
+			transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
+		}
+
+		/* Light Mode (Default) */
+		.inactive-adan {
+			background-color: #e8f5e9; /* A very soft, elegant mint green */
+			color: #252525;
+		}
+		.active-adan {
+			background-color: #f1a927; /* Matches your clock's beautiful orange/gold dot */
+			color: #fff;
+		}
+
+		/* Dark Mode */
+		body.dark-mode #aoukat table tr td {
+			border-color: #333; /* Darkens the table borders */
+		}
+		body.dark-mode .inactive-adan {
+			background-color: #1e1e1e; /* Deep gray to blend with dark mode */
+			color: #e0e0e0;
+		}
+		body.dark-mode .active-adan {
+			background-color: #b37b15; /* A darker, muted gold so it doesn't blind you at night */
+			color: #ffffff;
+		}
+		/* -------------------------------- */
+		/* ------------------------ */
+
+		#theme-toggle {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			font-size: 30px;
+			cursor: pointer;
+			z-index: 1000;
 		}
 
 		#loadtime {
@@ -274,6 +339,8 @@
 	</style>
 </head>
 <body>
+	<div id="theme-toggle">🌙</div>
+	
 	<div id="medina">
 		<select required>
 			<option id="selectcity" value="" selected disabled hidden>Select city...</option>
@@ -352,6 +419,32 @@
 		</div>
 	</div>
 	<script>
+
+        // --- Theme Toggle Logic ---
+		const themeToggle = document.getElementById('theme-toggle');
+		
+		// 1. Check if the user already has a saved preference
+		const currentTheme = localStorage.getItem('theme');
+		if (currentTheme === 'dark') {
+			document.body.classList.add('dark-mode');
+			themeToggle.textContent = '☀️';
+		} else {
+			themeToggle.textContent = '🌙';
+		}
+
+		// 2. Toggle the theme and save the new preference
+		themeToggle.addEventListener('click', () => {
+			document.body.classList.toggle('dark-mode');
+			if (document.body.classList.contains('dark-mode')) {
+				themeToggle.textContent = '☀️';
+				localStorage.setItem('theme', 'dark'); // Save dark mode
+			} else {
+				themeToggle.textContent = '🌙';
+				localStorage.setItem('theme', 'light'); // Save light mode
+			}
+		});
+		// --------------------------
+
 		const clock = document.querySelector('#clock');
 		let medinaname = document.getElementById("medina").getElementsByTagName("select")[0];
 		let medinaselect;
@@ -607,10 +700,13 @@
 			reversetimeclock.textContent = `${sign}${countthr}:${counttmr}:${counttsr}`;
 
 			for (var i = 0; i < countadanc.length; i++) {
-				if (i==coloradan) {
-					document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr')[i].style.backgroundColor="#f8de93";
+				let row = document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr')[i];
+				if (i == coloradan) {
+					row.className = "active-adan";
+					row.style.backgroundColor = ""; /* Clears old inline styles */
 				} else {
-					document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr')[i].style.backgroundColor="#27f144";
+					row.className = "inactive-adan";
+					row.style.backgroundColor = ""; /* Clears old inline styles */
 				}
 			}
 
