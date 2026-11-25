@@ -1,718 +1,84 @@
-
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
-	<script src="adan.js"></script>
-	<title>Clock</title>
-	<style>
-		* {
-			user-select: none;
-		}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Site Under Construction</title>
+  <style>
+    * { box-sizing: border-box; }
 
-		body {
-			padding: 0;
-			margin: 0;
-			background-color: #F0F2F5;
-			background-attachment: fixed;
-			transition: background-color 0.3s ease; /* Smooth transition */
-		}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: 46px 20px 32px;
+      display: grid;
+      place-items: center;
+      background: #000;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+    }
 
-		/* --- Dark Mode Styles --- */
-		body.dark-mode {
-			background-color: #121212;
-		}
-		body.dark-mode #nari,
-		body.dark-mode #name,
-		body.dark-mode .numbers,
-		body.dark-mode #timeclock {
-			color: #e0e0e0;
-		}
-		body.dark-mode #shorthand,
-		body.dark-mode #mediumhand,
-		body.dark-mode .line1,
-		body.dark-mode .line2 {
-			background-color: #e0e0e0;
-		}
-		body.dark-mode #reversetimeclock,
-		body.dark-mode #medina select {
-			color: #ff8a8a; /* Lighter red for better contrast */
-		}
-		body.dark-mode #medina select {
-			background-color: #2a2a2a;
-			border: 1px solid #555;
-		}
-        /* --- Prayer Time Table Colors --- */
-		#aoukat table tr td {
-			/* Added smooth transition for theme switching */
-			transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
-		}
+    main { width: 100%; }
 
-		/* Light Mode (Default) */
-		.inactive-adan {
-			background-color: #e8f5e9; /* A very soft, elegant mint green */
-			color: #252525;
-		}
-		.active-adan {
-			background-color: #f1a927; /* Matches your clock's beautiful orange/gold dot */
-			color: #fff;
-		}
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.0625rem);
+      line-height: 1.2;
+    }
 
-		/* Dark Mode */
-		body.dark-mode #aoukat table tr td {
-			border-color: #333; /* Darkens the table borders */
-		}
-		body.dark-mode .inactive-adan {
-			background-color: #1e1e1e; /* Deep gray to blend with dark mode */
-			color: #e0e0e0;
-		}
-		body.dark-mode .active-adan {
-			background-color: #b37b15; /* A darker, muted gold so it doesn't blind you at night */
-			color: #ffffff;
-		}
-		/* -------------------------------- */
-		/* ------------------------ */
+    p {
+      margin: clamp(28px, 4vw, 42px) auto 0;
+      max-width: 56rem;
+      color: #858585;
+      font-size: clamp(1.125rem, 2.1vw, 1.8125rem);
+      line-height: 1.6;
+      letter-spacing: 0.25px;
+    }
 
-		#theme-toggle {
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			font-size: 30px;
-			cursor: pointer;
-			z-index: 1000;
-		}
+    p span { display: block; }
 
-		#loadtime {
-			overflow: hidden;
-			position: relative;
-			display: none;
-		}
+    ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px clamp(20px, 4vw, 60px);
+      margin: clamp(28px, 4vw, 51px) 0 0;
+      padding: 0;
+      list-style: none;
+    }
 
-		#nari {
-			font-size: 30px;
-			font-family: 'Oswald', sans-serif;
-			font-family: "IBM Plex Sans Arabic", sans-serif;
-			color: #252525;
-			font-weight: bolder;
-			text-align: center;
-			margin-top: 10px;
-		}
+    li a {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 44px;
+      color: #808080;
+      font-size: 15px;
+      text-decoration: none;
+    }
 
-		#page {
-			width: 100%;
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-		}
+    a[href]:hover, a[href]:focus-visible { color: white; }
+    a[href]:focus-visible { outline: 2px solid white; outline-offset: 4px; }
 
-		#clock {
-			width: 500px;
-			height: 500px;
-			margin-top: 20px;
-			margin-bottom: 20px;
-			overflow: hidden;
-			border-radius: 50%;
-			position: relative;
-			justify-content: center;
-			display: flex;
-		}
-
-		#dot {
-			width: 25px;
-			height: 25px;
-			background-color: #f1a927;
-			margin-top: 237.5px;
-			border-radius: 50%;
-			position: absolute;
-			z-index: 100;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		}
-
-		#longhandarea {
-			height: 450px;
-			width: 5px;
-			margin-top: 25px;
-			border-radius: 10px;
-			position: absolute;
-			z-index: 100;
-		}
-
-		#longhand {
-			height: 250px;
-			width: 5px;
-			background-color: #f1a927;
-			border-radius: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		}
-
-		#shorthandarea {
-			height: 250px;
-			width: 15px;
-			margin-top: 125px;
-			border-radius: 10px;
-			position: absolute;
-			z-index: 10;
-		}
-
-		#shorthand {
-			height: 125px;
-			width: 15px;
-			background-color: #252525;
-			border-radius: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		}
-
-		#shorthandareashadow {
-			height: 250px;
-			width: 15px;
-			margin-top: 125px;
-			border-radius: 10px;
-			display: none;
-			position: absolute;
-			z-index: 10;
-		}
-
-		#shorthandshadow {
-			height: 50%;
-			width: 15px;
-			background-color: rgba(37, 37, 37, .4);
-			border-radius: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		}
-
-		#mediumhandarea {
-			height: 375px;
-			width: 8px;
-			margin-top: 62.5px;
-			border-radius: 10px;
-			position: absolute;
-			z-index: 0;
-		}
-
-		#mediumhand {
-			height: 187.5px;
-			width: 8px;
-			background-color: #252525;
-			border-radius: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		}
-
-		#mediumhandareashadow {
-			height: 375px;
-			width: 8px;
-			margin-top: 62.5px;
-			border-radius: 10px;
-			display: none;
-			position: absolute;
-			z-index: 0;
-		}
-
-		#mediumhandshadow {
-			height: 50%;
-			width: 8px;
-			background-color: rgba(37, 37, 37, .4);
-			border-radius: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		}
-
-		#name {
-			font-size: 30px;
-			font-family: 'Oswald', sans-serif;
-			color: #252525;
-			font-weight: bolder;
-			margin-top: 310px;
-		}
-
-		.line {
-			position: absolute;
-			z-index: 99;
-			height: 500px;
-			display: flex;
-			align-content: center;
-		}
-
-		.line1 {
-			width: 4px;
-			height: 25px;
-			background-color: #252525;
-			border-radius: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		}
-
-		.line2a {
-			display: flex;
-			justify-content: center;
-		}
-
-		.line2 {
-			width: 7px;
-			height: 50px;
-			background-color: #252525;
-			border-radius: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		}
-
-		.numbers {
-			font-size: 30px;
-			font-family: 'Oswald', sans-serif;
-			color: #252525;
-			font-weight: bolder;
-			position: absolute;
-			margin-top: 60px;
-			z-index: -1;
-		}
-
-		#time {
-			width: 300px;
-			height: 500px;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-around;
-			align-items: center;
-
-		}
-
-		#aoukat table {
-			direction: rtl;
-			width: 350px;
-			height: 300px;
-		}
-
-		#aoukat table tr td {
-			border:1px solid black;
-			font-size: 20px;
-			font-family: "IBM Plex Sans Arabic", sans-serif;
-			color: #252525;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			font-weight: bolder;
-			text-align: center;
-		}
-
-		#timeclock {
-			font-size: 30px;
-			font-family: "IBM Plex Sans Arabic", sans-serif;
-			color: #252525;
-			font-weight: bolder;
-			text-align: center;
-			overflow: hidden;
-		}
-
-		#reversetimeclock {
-			font-size: 30px;
-			font-family: "IBM Plex Sans Arabic", sans-serif;
-			color: darkred;
-			font-weight: bolder;
-			text-align: center;
-			overflow: hidden;
-		}
-
-		#medina {
-			width: 100%;
-			height: 100vh;
-			position: relative;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		#medina select {
-			width: 300px;
-			font-size: 30px;
-			font-family: "IBM Plex Sans Arabic", sans-serif;
-			color: darkred;
-			text-align: center;
-			text-transform: capitalize;
-		}
-
-		@media only screen and (max-width:900px) {
-			#page {
-				flex-direction: column;
-				height: auto;
-			}
-		}
-	</style>
+    @media (max-width: 520px) {
+      ul { display: grid; grid-template-columns: repeat(2, max-content); }
+      li { text-align: left; }
+    }
+  </style>
 </head>
 <body>
-	<div id="theme-toggle">🌙</div>
-	
-	<div id="medina">
-		<select required>
-			<option id="selectcity" value="" selected disabled hidden>Select city...</option>
-			<option id="rabat" value="rabat">rabat</option>
-			<option id="khemisset" value="khemisset">khemisset</option>
-			<option id="tiflet" value="tiflet">tiflet</option>
-			<option id="kenitra" value="kenitra">kenitra</option>
-			<option id="fes" value="fes">fes</option>
-		</select>
-	</div>
-	<div id="loadtime">
-		<div id="nari"></div>
-		<div id="page">
-			<div id="clock">
-				<div id="longhandarea">
-					<div id="longhand"></div>
-				</div>
-				<div id="shorthandarea">
-					<div id="shorthand"></div>
-				</div>
-				<div id="mediumhandarea">
-					<div id="mediumhand"></div>
-				</div>
-				<div id="shorthandareashadow">
-					<div id="shorthandshadow"></div>
-				</div>
-				<div id="mediumhandareashadow">
-					<div id="mediumhandshadow"></div>
-				</div>
-				<div id="dot"></div>
-				<div id="name">Ouahi</div>
-			</div>
-			<div id="time">
-				<div id="aoukat">
-					<table>
-						<tr>
-							<td>
-								الفجر
-							</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>
-								الشروق
-							</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>
-								الظهر
-							</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>
-								العصر
-							</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>
-								المغرب
-							</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>
-								العشاء
-							</td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
-				<div id="timeclock"></div>
-				<div id="reversetimeclock"></div>
-			</div>
-		</div>
-	</div>
-	<script>
+  <main>
+    <h1>Site Under Construction</h1>
+    <p>
+      <span>Our website is currently undergoing scheduled maintenance.</span>
+      <span>Thank you for your understanding.</span>
+    </p>
 
-        // --- Theme Toggle Logic ---
-		const themeToggle = document.getElementById('theme-toggle');
-		
-		// 1. Check if the user already has a saved preference
-		const currentTheme = localStorage.getItem('theme');
-		if (currentTheme === 'dark') {
-			document.body.classList.add('dark-mode');
-			themeToggle.textContent = '☀️';
-		} else {
-			themeToggle.textContent = '🌙';
-		}
-
-		// 2. Toggle the theme and save the new preference
-		themeToggle.addEventListener('click', () => {
-			document.body.classList.toggle('dark-mode');
-			if (document.body.classList.contains('dark-mode')) {
-				themeToggle.textContent = '☀️';
-				localStorage.setItem('theme', 'dark'); // Save dark mode
-			} else {
-				themeToggle.textContent = '🌙';
-				localStorage.setItem('theme', 'light'); // Save light mode
-			}
-		});
-		// --------------------------
-
-		const clock = document.querySelector('#clock');
-		let medinaname = document.getElementById("medina").getElementsByTagName("select")[0];
-		let medinaselect;
-		const medina = [];
-		let nhar;
-		let countnow;
-		const countadanh=[];
-		const countadanm=[];
-		const countadanc=[];
-
-		let windowwidth = window.innerWidth;
-		let windowwidthc;
-
-		sizepage();
-
-		window.addEventListener("resize", () => {
-			windowwidth = window.innerWidth
-			sizepage();
-		});
-
-		function sizepage() {
-			if (windowwidth <= 500) {
-				windowwidthc = (windowwidth - 50) / 500;
-				clock.style.transform = `scale(${windowwidthc})`;
-			} else {
-				clock.style.transform = "scale(1)";
-			}
-		}
-
-		const medinat = [rabat, khemisset, tiflet, kenitra, fes];
-
-		let lmdina = localStorage.getItem("medina");
-
-		if (!lmdina) {
-
-			medinaname.addEventListener("change", function (){
-				medina.length=0;
-				medinaselect = Number(medinaname.selectedIndex - 1);
-				medina.push(medinat[medinaselect]);
-				localStorage.setItem("medina", medinaselect);
-				document.getElementById("selectcity").remove();
-				medinaname.getElementsByTagName('option')[medinaselect].setAttribute('selected', 'selected');
-				document.getElementById("medina").style.height="auto";
-				medinaname.style.width="200px";
-				medinaname.style.fontSize="20px";
-				document.getElementById('loadtime').style.display = "block";
-				taoukit();
-				date();
-				noureddine();
-				ouahi();
-			});
-
-		} else {
-			medina.length=0;
-			medina.push(medinat[lmdina]);
-			document.getElementById("selectcity").remove();
-			medinaname.getElementsByTagName('option')[lmdina].setAttribute('selected', 'selected');
-			document.getElementById("medina").style.height="auto";
-			medinaname.style.width="200px";
-			medinaname.style.fontSize="20px";
-			document.getElementById('loadtime').style.display = "block";
-			taoukit();
-			date();
-			noureddine();
-			ouahi();
-		}
-
-		medinaname.addEventListener("change", function (){
-			medina.length=0;
-			medinaselect = Number(medinaname.selectedIndex);
-			medina.push(medinat[medinaselect]);
-			localStorage.setItem("medina", medinaselect);
-			medinaname.getElementsByTagName('option')[medinaselect].setAttribute('selected', 'selected');
-			taoukit();
-			date();
-			noureddine();
-			ouahi();
-		});
-
-		for (let i = 1; i <= 60; i++) {
-			let count = 6 * i;
-
-			const line = document.createElement('div');
-			line.className = 'line';
-			line.style.transform = `rotate(${count}deg)`;
-
-			if (i % 5 === 0) {
-				const line2a = document.createElement('div');
-				line2a.className = 'line2a';
-
-				const line2 = document.createElement('div');
-				line2.className = 'line2';
-				line2a.appendChild(line2);
-
-				const numbers = document.createElement('div');
-				numbers.className = 'numbers';
-				numbers.textContent = i / 5;
-				numbers.style.transform = `rotate(${(-1 * count)}deg)`;
-				line2a.appendChild(numbers);
-
-				line.appendChild(line2a);
-			} else {
-				const line1 = document.createElement('div');
-				line1.className = 'line1';
-				line.appendChild(line1);
-			}
-
-			clock.appendChild(line);
-		}
-
-		function taoukit() {
-			let n,hada,hadatest;
-			var adan=document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr');
-			const d = new Date();
-			n = d.getDate();
-
-			for (var i = 0; i < medina[0].length; i++) {
-				hada=medina[0][i];
-				if (n==hada[2]) {
-					if (!hadatest) {
-						nhar=hada;
-						hadatest=true;
-					}
-				}
-			}
-
-			for (var i = 0; i < adan.length; i++) {
-				adan[i].getElementsByTagName('td')[1].innerHTML=nhar[i+3]
-			}
-
-			for (var i = 0; i < adan.length; i++) {
-				let td=adan[i].getElementsByTagName("td")[1].innerHTML;
-				let ca=td.charAt(0);
-				let cb=td.charAt(1);
-				let cc=td.charAt(3);
-				let cd=td.charAt(4);
-				countadanh[i]=ca+cb;
-				countadanm[i]=cc+cd;
-				countadanc[i]=Number(countadanh[i])*3600+Number(countadanm[i])*60;
-			}
-
-		}
-
-		function date() {
-			const d = new Date();
-			const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-			const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-
-			document.getElementById("nari").innerHTML = `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`+"<br>"+`1448 ${nhar[0]} ${nhar[1]} ${medina[0][0][1]}`;
-		}
-
-		function noureddine() {
-			let h, m, s, counth, countm, counts, countn, counthn, countmn, countsn;
-			const longhandArea = document.querySelector("#longhandarea");
-			const shorthandArea = document.querySelector("#shorthandarea");
-			const mediumhandArea = document.querySelector("#mediumhandarea");
-			const timeclock = document.querySelector("#timeclock");
-
-			const d = new Date();
-			h = d.getHours();
-			m = d.getMinutes();
-			s = d.getSeconds();
-			countn = d.getMilliseconds();
-
-			countnow = s+h*3600+m*60;
-
-			counthn = h < 10 ? `0${h}` : h;
-			countmn = m < 10 ? `0${m}` : m;
-			countsn = s < 10 ? `0${s}` : s;
-
-			counth = h <= 12 ? h * 30 : (h - 12) * 30;
-			countm = m * 6;
-			counts = s * 6 + (countn * 6) / 1000;
-			countm += (counts * 6) / 360;
-			counth += (countm * 3) / 36;
-
-			if (longhandArea) longhandArea.style.transform = `rotate(${counts}deg)`;
-			if (shorthandArea) shorthandArea.style.transform = `rotate(${counth}deg)`;
-			if (mediumhandArea) mediumhandArea.style.transform = `rotate(${countm}deg)`;
-
-			timeclock.textContent = `${counthn}:${countmn}:${countsn}`;
-
-			requestAnimationFrame(noureddine);
-		}
-
-		function ouahi() {
-			let ca, cb, cc, cd, ch, cm, counth, countm, countnext, countthr, counttmr, counttsr, count=86400, sign = "-";
-			const shorthandAreaShadow = document.querySelector("#shorthandareashadow");
-			const mediumHandAreaShadow = document.querySelector("#mediumhandareashadow");
-			let timeCT;
-			let coloradan;
-
-			for (var i = 0; i < countadanc.length; i++) {
-				if (!timeCT) {
-					let countnexttogglenumber = Number(countadanc[i] - countnow);
-					if (countnexttogglenumber >= -900) {
-						timeCT = `${countadanh[i]}:${countadanm[i]}`;
-						count = countadanc[i];
-						coloradan = i;
-					}
-				}
-			}
-
-			if (!timeCT) {
-				timeCT = "24:00";
-			}
-
-			const reverse = count - countnow;
-
-			counttmr=reverse%3600;
-			countthr=reverse-counttmr;
-			countthr=countthr/3600;
-			counttsr=counttmr%60;
-			counttmr=counttmr-counttsr;
-			counttmr=counttmr/60;
-
-			ca = timeCT.charAt(0);
-			cb = timeCT.charAt(1);
-			cc = timeCT.charAt(3);
-			cd = timeCT.charAt(4);
-
-			ch = Number(ca + cb);
-			cm = Number(cc + cd);
-
-			counth = ch;
-			countm = cm * 6;
-
-			if (counth <= 12) {
-				counth = counth * 30;
-			} else {
-				counth = (counth - 12) * 30;
-			}
-
-			counth = counth + (countm * 3) / 36;
-
-			if (countnow > count) {
-				sign="+";
-				counttmr=-1*counttmr;
-				counttsr=-1*counttsr;
-				countthr=-1*countthr;
-			}
-
-			countthr = countthr < 10 ? `0${countthr}` : countthr;
-			counttmr = counttmr < 10 ? `0${counttmr}` : counttmr;
-			counttsr = counttsr < 10 ? `0${counttsr}` : counttsr;
-
-			shorthandAreaShadow.style.display = "block";
-			mediumHandAreaShadow.style.display = "block";
-
-			if (shorthandAreaShadow) shorthandAreaShadow.style.transform = `rotate(${counth}deg)`;
-			if (mediumHandAreaShadow) mediumHandAreaShadow.style.transform = `rotate(${countm}deg)`;
-
-			reversetimeclock.textContent = `${sign}${countthr}:${counttmr}:${counttsr}`;
-
-			for (var i = 0; i < countadanc.length; i++) {
-				let row = document.getElementById("aoukat").getElementsByTagName('table')[0].getElementsByTagName('tr')[i];
-				if (i == coloradan) {
-					row.className = "active-adan";
-					row.style.backgroundColor = ""; /* Clears old inline styles */
-				} else {
-					row.className = "inactive-adan";
-					row.style.backgroundColor = ""; /* Clears old inline styles */
-				}
-			}
-
-			requestAnimationFrame(ouahi);
-		}
-	</script>
+    <!-- Add an href to each social link when you have its profile URL.
+         For Mail, use a mailto: address. The small icons are embedded for offline use. -->
+  </main>
 </body>
 </html>
